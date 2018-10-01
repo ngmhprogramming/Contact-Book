@@ -1,19 +1,30 @@
 #Stack wrapper to simplify actual flask code
 #Used for both Undo and Redo stack
+#A changelog can be modelled as a tree
+#Splitting into branches with edges as changes
 #Logic for undo and redo
 #Case 1:
 #Insertion / Deletion
 #Change is pushed to undo stack
 #Redo stack is reset
-#_______.______> Original path
+#	original
+#	/
+#  new
 #Assume we have undone until this point
-#_______.(______>) this part is on the redo stack
+#	original
+#(	/
+#  new) (on redo stack)
 #The path will change when we make a change
-#_______.(______>) this part will cause conflict with the other path
-#       \____>
+#	original
+#(	/	   \
+#  new)   newest
+#(unused)
 #Even if we undo back
-#_______.(______>) we now have
-#       \(____>) 2 path choices
+#	original
+#(	/	  (\
+#  new)   newest)
+#We have 2 choices
+#For simplicity, the newest one is kept
 #Case 2:
 #Undo
 #Most recent change is undone, and pushed to redo stack

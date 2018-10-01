@@ -7,9 +7,12 @@ class Connectivity:
     def __init__(self):
         self.source = ""
         self.end = ""
+        #Stored as an adjacency list, mapping each node to the other nodes it connects
         self.edges = {}
         self.visited = []
     #Read in graph
+    #A global adjacency list is used
+    #To prevent excessively long lookup by checking every single book
     def read(self):
         edges = {}
         with open("graph.gr", "r") as file:
@@ -40,7 +43,7 @@ class Connectivity:
                     route = u
         return best, route
     #Perform Depth First Search to get minimum distance
-    #Avoid using the owners contacts
+    #Avoid using the owner's contacts
     #O(N)
     def dfs_ex(self, avoid, node, dist, path):
         #Do not visit node again, as it is never optimal

@@ -1,0 +1,203 @@
+<html>
+	<head>
+		<title>Contact Book</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  		<link rel="stylesheet" type="text/css" href="/static/style.css">
+		<link rel="shortcut icon" href="/static/favicon.ico">
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Contact Book</a>
+		    	</div>
+		    	<ul class="nav navbar-nav">
+		    		<li><a href="/">Home</a></li>
+					<li><a href="/login">Login</a></li>
+					<li><a href="/signup">Signup</a></li>
+					{% if username %}
+		            <li><a href="/books">Contact Books</a></li>
+		            <li><a href="/connectivity">Connectivity</a></li>
+					<li><a>&#x1f464 {{ username }}</a></li>
+					<li><a href="/logout">Logout</a></li>
+		            {% endif %}
+				</ul>
+			</div>
+		</nav>
+        {% if success %}
+        <div class="alert alert-success alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Success</strong></h3><p>{{ success }}</p>
+		</div>
+        {% endif %}
+        {% if info %}
+        <div class="alert alert-info alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Information</strong></h3><p>{{ info }}</p>
+		</div>
+        {% endif %}
+		{% if warning %}
+        <div class="alert alert-warning alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Warning</strong></h3><p>{{ warning }}</p>
+		</div>
+        {% endif %}
+		{% if error %}
+        <div class="alert alert-danger alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Error</strong></h3><p>{{ error }}</p>
+        </div>
+        {% endif %}
+		<form id="upload" method="POST" enctype="multipart/form-data" style="display: inline-block;">
+			<input hidden type="text" name="load" value="load">
+			<div class="custom-file" style="display: inline-block;">
+				<input type="file" class="custom-file-input" name="file" required>
+			</div>
+			<input type="submit" class="btn btn-info" value="&#x2191 Upload">
+		</form>
+		<form style="display: inline-block;">
+        	<a href="download?bookname={{ bookname }}"><input type="submit" class="btn btn-info" value="&#x2193 Download"></a>
+        </form>
+        <form method="POST" style="display: inline-block;">
+			<input hidden type="text" name="revert" value="undo">
+			<input type="submit" class="btn btn-info" value="&#x21B6 Undo">
+		</form>
+		<form method="POST" style="display: inline-block">
+			<input hidden type="text" name="revert" value="redo">
+			<input type="submit" class="btn btn-info" value="&#x21B7 Redo">
+		</form>
+		<br>
+		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseEdit">Filter Results</button>
+		<div class="collapse" id="collapseFilter">
+			<form method="POST">
+				<input hidden type="text" name="filter" value="yes">
+				<div class="form-group">
+					<label>First Field</label>
+					<select name="field1" class="form-control">
+						<option value="none" selected="selected">None</option>
+						<option value="fname">First Name</option>
+						<option value="lname">Last Name</option>
+						<option value="pnumber">Phone Number</option>
+						<option value="birthday">Birthday</option>
+						<option value="email">Email</option>
+						<option value="importance">Importance</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>is</label>
+					<input type="text" name="value1" class="form-control" placeholder="Value">
+				</div>
+				<div class="form-group">
+					<label>Operator</label>
+					<select name="operator" class="form-control">
+						<option value="none" selected="selected">None</option>
+		    			<option value="and">And</option>
+		    			<option value="or">Or</option>
+		    			<option value="xor">Xor</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Second Field</label>
+					<select name="field2" class="form-control">
+						<option value="none" selected="selected">None</option>
+						<option value="fname">First Name</option>
+						<option value="lname">Last Name</option>
+						<option value="pnumber">Phone Number</option>
+						<option value="birthday">Birthday</option>
+						<option value="email">Email</option>
+						<option value="importance">Importance</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>is</label>
+					<input type="text" name="value2" class="form-control" placeholder="Value">
+				</div>
+				<input type="submit" class="btn btn-info">
+			</form>
+		</div>
+		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseEdit" aria-expanded="false" aria-controls="collapseEdit">Edit Contact</button>
+		<div class="collapse" id="collapseEdit">
+			<form method="POST">
+				<input hidden type="text" name="edit" value="yes">
+				<label>Only fill up the "to" input which applies to your field!</label>
+				<div class="form-group">
+					<label>Set</label>
+					<select name="field" class="form-control" required>
+						<option value="fname">First Name</option>
+						<option value="lname">Last Name</option>
+						<option value="pnumber">Phone Number</option>
+						<option value="birthday">Birthday</option>
+						<option value="email">Email</option>
+						<option value="importance">Importance</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>to (first name, last name, phone number)</label>
+					<input type="text" name="value1" class="form-control" placeholder="New Value">
+				</div>
+				<div class="form-group">
+					<label>to (birthday)</label>
+					<input type="date" name="value2" class="form-control" placeholder="New Value">
+				</div>
+				<div class="form-group">
+					<label>to (email)</label>
+					<input type="email" name="value3" class="form-control" placeholder="New Value">
+				</div>
+				<div class="form-group">
+					<label>to (importance)</label>
+					<input type="text" name="value4" class="form-control" placeholder="New Value">
+				</div>
+				<div class="form-group">
+					<label>for the Phone Number of</label>
+					<input type="text" name="pnumber" class="form-control" placeholder="Phone Number" required>
+				</div>
+				<input type="submit" class="btn btn-info">
+			</form>
+		</div>
+		<table class="table">
+			<tr>
+				<th><a href="view_book?bookname={{ bookname }}&sort=FNAME{% if rev == 'F' %}&reverse=T{% endif %}">First Name &#x25B2&#x25BC
+    			</a></th>
+				<th><a href="view_book?bookname={{ bookname }}&sort=LNAME{% if rev == 'F' %}&reverse=T{% endif %}">Last Name &#x25B2&#x25BC </a></th>
+				<th><a href="view_book?bookname={{ bookname }}&sort=PNUMBER{% if rev == 'F' %}&reverse=T{% endif %}">Phone Number &#x25B2&#x25BC</a></th>
+				<th><a href="view_book?bookname={{ bookname }}&sort=BDAY{% if rev == 'F' %}&reverse=T{% endif %}">Birthday &#x25B2&#x25BC</a></th>
+				<th><a href="view_book?bookname={{ bookname }}&sort=EMAIL{% if rev == 'F' %}&reverse=T{% endif %}">Email &#x25B2&#x25BC</a></th>
+				<th><a href="view_book?bookname={{ bookname }}&sort=IMP{% if rev == 'F' %}&reverse=T{% endif %}">Importance &#x25B2&#x25BC</a></th>
+			</tr>
+			<form method="POST">
+				<tr>
+					<td><div class="form-group"><input type="text" name="fname" class="form-control" required></div></td>
+					<td><div class="form-group"><input type="text" name="lname" class="form-control" required></div></td>
+					<td><div class="form-group"><input type="text" name="pnumber" class="form-control" required></div></td>
+					<td><div class="form-group"><input type="date" name="birthday" class="form-control" required></div></td>
+					<td><div class="form-group"><input type="email" name ="email" class="form-control" required></div></td>
+					<td><div class="form-group"><input type="number" name="importance" class="form-control" required></div></td>
+					<td><input type="submit" class="btn btn-info" value="Insert"></td>
+				</tr>
+			</form>
+			{% for row in book %}
+			<tr>
+				<td>{{ row["First Name"] }}</td>
+				<td>{{ row["Last Name"] }}</td>
+				<td>{{ row["Phone Number"] }}</td>
+				<td>{{ row["Birthday"] }}</td>
+				<td>{{ row["Email"] }}</td>
+				<td>{{ row["Importance"] }}</td>
+				<td><form method="POST"><input hidden type="text" name="delete" value="{{ row["Phone Number"] }}"><input type="submit" class="btn btn-info" value="X"></form></td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td>{{ av["First Name"] }}</td>
+				<td>{{ av["Last Name"] }}</td>
+				<td>{{ av["Phone Number"] }}</td>
+				<td>{{ av["Birthday"] }}</td>
+				<td>{{ av["Email"] }}</td>
+				<td>{{ av["Importance"] }}</td>
+				<td>Average</td>
+			</tr>
+		</table>
+	</body>
+</html>
+

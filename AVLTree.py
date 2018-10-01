@@ -254,10 +254,3 @@ class AVLTree:
         if root is None: return "(-)"
         return "("+self.string(root.left)+str(root.key)+self.string(root.right)+")"
     __repr__ = __str__
-
-if __name__ == "__main__":
-    tree = AVLTree()
-    root = None
-
-    tree.insert(root, 10, 53)
-    

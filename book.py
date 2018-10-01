@@ -25,7 +25,7 @@ class Book:
             without = {}
             for k in row.keys():
                 if k != self.fields[i]: without[k] = row[k]
-            self.trees[i] = self.tree.insert(self.trees[i], row[self.fields[i]], without)\
+            self.trees[i] = self.tree.insert(self.trees[i], row[self.fields[i]], without)
     #Get row associated with phone number
     def pnumber(self, pnumber):
         r = self.tree.search(self.trees[2], pnumber)
@@ -46,15 +46,17 @@ class Book:
             self.trees[i] = self.tree.delete(self.trees[i], row[self.fields[i]], without)
         return True
     #Get all contacts
-    def all(self):
-        r = self.tree.all(self.trees[2])
+    #Option to sort by field
+    def all(self, field=None):
+        if field is None: field = "Phone Number"
+        r = self.tree.all(self.trees[self.fields.index(field)])
         a = []
         for i in r:
             for j in i.values:
                 d = {}
                 for k in j.keys():
                     d[k] = str(j[k])
-                d[self.fields[2]] = i.key
+                d[field] = i.key
                 d["Birthday"] = strftime("%Y-%m-%d", gmtime(int(d["Birthday"])))
                 a.append(d)
         return a

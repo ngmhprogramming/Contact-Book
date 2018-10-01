@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<title>Contact Book</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  		<link rel="stylesheet" type="text/css" href="/static/style.css">
+		<link rel="shortcut icon" href="/static/favicon.ico">
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Contact Book</a>
+		    	</div>
+		    	<ul class="nav navbar-nav">
+		    		<li><a href="/">Home</a></li>
+					<li><a href="/login">Login</a></li>
+					<li><a href="/signup">Signup</a></li>
+					{% if username %}
+		            <li><a href="/books">Contact Books</a></li>
+		            <li><a href="/connectivity">Connectivity</a></li>
+					<li><a>&#x1f464 {{ username }}</a></li>
+					<li><a href="/logout">Logout</a></li>
+		            {% endif %}
+				</ul>
+			</div>
+		</nav>
+        {% if success %}
+        <div class="alert alert-success alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Success</strong></h3><p>{{ success }}</p>
+		</div>
+        {% endif %}
+        {% if info %}
+        <div class="alert alert-info alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Information</strong></h3><p>{{ info }}</p>
+		</div>
+        {% endif %}
+		{% if warning %}
+        <div class="alert alert-warning alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Warning</strong></h3><p>{{ warning }}</p>
+		</div>
+        {% endif %}
+		{% if error %}
+        <div class="alert alert-danger alert-dismissible">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h3><strong>Error</strong></h3><p>{{ error }}</p>
+        </div>
+        {% endif %}
+        <h1>Create a New Book</h1>
+        <form method="POST">
+			<div class="form-group">
+				<label>Book Name</label>
+				<input type="text" name="bookname" class="form-control" placeholder="Book Name" required>
+			</div>
+			<div class="form-group">
+				<label>Privacy - Your contacts can be <a href="/connectivity">traversed</a> if your book is public</label>
+				<select name="privacy" multiple class="form-control">
+					<option value="public" selected="selected">Public</option>
+					<option value="private">Private</option>
+				</select>
+			</div>
+			<input type="submit" class="btn btn-info">
+		</form>
+	</body>
+</html>
+
